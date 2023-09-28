@@ -5,7 +5,7 @@ import axios from "axios";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
 
-function Register({ setLoginInfo }) {
+function Register({ setLoginInfo, ...props }) {
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({
@@ -86,32 +86,35 @@ function Register({ setLoginInfo }) {
       .required("Please enter role!"),
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    callPost();
-  };
   const baseURL = "https://everywherefitness-9ab34b5731c6.herokuapp.com";
 
   function callPost() {
     axios
-      //to be replaced with fitness api from backend
       .post(`${baseURL}/api/auth/register`, userInfo)
       .then((res) => {
         window.localStorage.setItem("token", res.data.token);
         const role = res.data.cred.role;
         const userId = res.data.data.slice(3);
+        props.setIsAuthenticated(true);
 
         if (role === "client") {
-          history.push(`/client`);
+          history.push(`/client/dashboard/${userId}`);
         } else {
           history.push(`/instructor/dashboard/${userId}`);
         }
+
+        setLoginInfo(res.data);
       })
       .catch((err) => {
         console.log("server error in post", err);
         setServerError("oops! Looks like server side error!");
       });
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    callPost();
+  };
 
   return (
     <>

@@ -63,7 +63,7 @@ const ClientLogin = (props) => {
               props.addUser(loginResponse.data.id);
               sessionStorage.setItem("roleId", 2);
               console.log(loginResponse);
-              history.push("/client");
+              history.push("/client/dashboard");
             });
         }
       })

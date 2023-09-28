@@ -264,6 +264,10 @@ button {
   color: rgb(53, 62, 63);
   background-color: #f7e0e0;
 }
+
+.dark-mode .navbarbackground {
+  background-color: #f7e0e0;
+}
 .dark-mode .link {
   color: rgba(22, 22, 22, 0.8);
 }

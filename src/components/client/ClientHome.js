@@ -53,7 +53,7 @@ const ClientHome = (props) => {
     <div id="client-page">
       <div className="background">
         <br />
-        <div className="title">
+        <div className="client-title">
           <h1> {clientName}'s Dashboard</h1>
           <Search handleInputChange={handleInputChange} query={query} />
         </div>

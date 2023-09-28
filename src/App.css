@@ -1,3 +1,7 @@
+/* * {
+  border: 1px solid black;
+} */
+
 .app {
   background-image: url("https://images.pexels.com/photos/669578/pexels-photo-669578.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
   overflow-x: hidden;
@@ -11,7 +15,7 @@
   flex-direction: column;
   height: 100vh;
   align-items: center;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   background-image: url("https://images.unsplash.com/photo-1554284126-aa88f22d8b74?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2057&q=80");
   overflow-x: hidden;
   background-size: cover;
@@ -20,8 +24,34 @@
   width: 100%;
 }
 
+.homecontainer {
+  color: #f59494;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25vh;
+}
+
+.landinghead {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  color: #f59494;
+  font-weight: bolder;
+  font-size: 5vh;
+}
+
+.motto {
+  font-size: 3vh;
+  color: #f59494;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+  font-weight: bolder;
+  align-items: center;
+}
+
 /* Client Dashboard styling */
-.title {
+.client-title {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,11 +84,15 @@
 }
 
 .navbar {
-  background-color: rgba(22, 22, 22, 0.8);
   display: flex;
   padding-top: 2rem;
   padding-right: 3rem;
-  /* justify-content: space-evenly; */
+  width: 90%;
+  margin-left: 3rem;
+}
+
+.navbarbackground {
+  background-color: rgba(22, 22, 22, 0.8);
 }
 
 .link {

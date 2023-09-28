@@ -6,79 +6,73 @@ import axios from "axios";
 // import {axiosWithAuth} from "../../utils/axiosWithAuth";
 import { connect } from "react-redux";
 import { addUser } from "../../actions/index";
-import {FormDiv} from "../styles/FormDiv";
+import { FormDiv } from "../styles/FormDiv";
 
-import {SignupButton} from "../styles/SignupButton";
-import {SignupContainer} from "../styles/SignupContainer";
+import { SignupButton } from "../styles/SignupButton";
+import { SignupContainer } from "../styles/SignupContainer";
 import { Input } from "../styles/Input";
 
-const ClientLogin = props => {
+const ClientLogin = (props) => {
+  let history = useHistory();
 
-    let history = useHistory();
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    password: "",
+  });
 
-    const [userInfo, setUserInfo] = useState(
-        {
-            username: "",
-            password: ""
-        });
-   
-    const errorInfo =
-    {
-        username: [],
-        password: [],
-        login: []
-    };
+  const errorInfo = {
+    username: [],
+    password: [],
+    login: [],
+  };
 
-    function handleChange(event) {
-        setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
-    }
+  function handleChange(event) {
+    setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
+  }
 
-    function handleLogin(event) {
+  function handleLogin(event) {
+    event.preventDefault();
 
-        event.preventDefault();
+    // make a POST request to the database
+    axios
+      .post(
+        "https://everywherefitness-9ab34b5731c6.herokuapp.com/api/auth/login",
+        userInfo
+      )
+      .then((response) => {
+        console.log("Login status: Database accessed.");
+        console.log("Errors received from database: ", response);
 
-        // make a POST request to the database
-        axios
-        .post("https://anywherefitness187.herokuapp.com/api/auth/login", userInfo)
-            .then(response => {
-
-                console.log("Login status: Database accessed.");
-                console.log("Errors received from database: ", response);
-
-                if (response.message === "Username is not in the system.") {
-
-                    errorInfo.loginErrors.push("Username not found.")
-
-                }
-                else if (response.message === "Incorrect Password") {
-
-                    errorInfo.loginErrors.push("Password is incorrect.")
-
-                }
-                else {
-                    // get authentication token
-                    axios
-                    .post("https://anywherefitness187.herokuapp.com/api/auth/login", { username: userInfo.username, password: userInfo.password })
-                        .then(loginResponse => {
-                            sessionStorage.setItem("token", loginResponse.data.token);
-                            console.log(sessionStorage.getItem('token'))
-                            props.addUser(loginResponse.data.id);
-                            sessionStorage.setItem("roleId", 2);
-                            console.log(loginResponse);
-                            history.push("/client");
-                        })
-
-                }
-
-            })
-            .catch(response => {
-
-                console.log("Incorrect Username or Password: ", response);
-                errorInfo.login.push("Incorrect Username or Password")
-                document.getElementById("loginErrors").textContent = "Incorrect Username or Password";
-
+        if (response.message === "Username is not in the system.") {
+          errorInfo.loginErrors.push("Username not found.");
+        } else if (response.message === "Incorrect Password") {
+          errorInfo.loginErrors.push("Password is incorrect.");
+        } else {
+          // get authentication token
+          axios
+            .post(
+              "https://everywherefitness-9ab34b5731c6.herokuapp.com/api/auth/login",
+              {
+                username: userInfo.username,
+                password: userInfo.password,
+              }
+            )
+            .then((loginResponse) => {
+              sessionStorage.setItem("token", loginResponse.data.token);
+              console.log(sessionStorage.getItem("token"));
+              props.addUser(loginResponse.data.id);
+              sessionStorage.setItem("roleId", 2);
+              console.log(loginResponse);
+              history.push("/client");
             });
-
+        }
+      })
+      .catch((response) => {
+        console.log("Incorrect Username or Password: ", response);
+        errorInfo.login.push("Incorrect Username or Password");
+        document.getElementById("loginErrors").textContent =
+          "Incorrect Username or Password";
+      });
   }
 
   // format errors for display
@@ -110,9 +104,7 @@ const ClientLogin = props => {
           />
           <p className="formError" id="passwordErrors"></p>
 
-          <SignupButton type="submit">
-            Log In
-          </SignupButton>
+          <SignupButton type="submit">Log In</SignupButton>
         </form>
 
         <p className="loginErrors" id="loginErrors">
@@ -123,9 +115,9 @@ const ClientLogin = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 

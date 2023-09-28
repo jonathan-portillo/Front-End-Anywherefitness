@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import '../App.css';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, { useState, useEffect } from "react";
+import "../App.css";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
@@ -12,9 +12,9 @@ function Register({ setLoginInfo }) {
     username: "",
     password: "",
     role: "",
-  })
+  });
 
-  // managing state for errors.  
+  // managing state for errors.
   const [errors, setErrors] = useState({
     username: "",
     password: "",
@@ -31,18 +31,18 @@ function Register({ setLoginInfo }) {
     e.persist();
     const newUserInfo = {
       ...userInfo,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     };
-    
+
     validateChange(e); // for each change in input, do inline validation
     // console.log('After validate err State=', errors)
     setUserInfo(newUserInfo); // update state with new data
-  }
-
+  };
 
   //inline validation of one key-value pair at a time with yup
   const validateChange = (e) => {
-    yup.reach(formSchema, e.target.name)
+    yup
+      .reach(formSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
         // the input is passing!
@@ -55,7 +55,7 @@ function Register({ setLoginInfo }) {
         // console.log("err here", err);
         setErrors({ ...errors, [e.target.name]: err.errors[0] });
       });
-  }
+  };
 
   // whenever state updates, validate the entire form.
   // if valid, then change button to be enabled.
@@ -63,39 +63,41 @@ function Register({ setLoginInfo }) {
     formSchema.isValid(userInfo).then((valid) => {
       // console.log("is my form valid?", valid);
 
-      // valid is a boolean 
+      // valid is a boolean
       setButtonIsDisabled(!valid);
     });
   }, [userInfo]);
 
   // Add a schema, used for all validation to determine whether the input is valid or not
   const formSchema = yup.object().shape({
-    username: yup.string()
+    username: yup
+      .string()
       .min(4, "Please enter name of atleast 4 characters")
       .required("Name is required"),
 
-    password: yup.string()
+    password: yup
+      .string()
       .min(5, "Please enter password of atleast 5 characters")
       .required("Please enter Password"),
 
-    role: yup.string()
+    role: yup
+      .string()
       .oneOf(["client", "instructor"], "Please choose Client or Instructor")
       .required("Please enter role!"),
   });
 
   const handleSubmit = (e) => {
-   
     e.preventDefault();
     callPost();
-  }
-  const baseURL = "https://anywherefitness187.herokuapp.com";
+  };
+  const baseURL = "https://everywherefitness-9ab34b5731c6.herokuapp.com";
 
   function callPost() {
     axios
       //to be replaced with fitness api from backend
       .post(`${baseURL}/api/auth/register`, userInfo)
       .then((res) => {
-        window.localStorage.setItem('token', res.data.token);
+        window.localStorage.setItem("token", res.data.token);
         const role = res.data.cred.role;
         const userId = res.data.data.slice(3);
 
@@ -106,46 +108,51 @@ function Register({ setLoginInfo }) {
         }
       })
       .catch((err) => {
-        console.log('server error in post', err)
+        console.log("server error in post", err);
         setServerError("oops! Looks like server side error!");
       });
   }
 
   return (
     <>
-      <Form className="register-form"
-        onSubmit={handleSubmit}
-        name="register">
+      <Form className="register-form" onSubmit={handleSubmit} name="register">
         {serverError && <p className="error">{serverError}</p>}
         <h2 className="text-center">Please Register!</h2>
 
         <FormGroup className="text-left">
-
           <Label htmlFor="userName">Name </Label>
-          <Input type="text"
+          <Input
+            type="text"
             id="username"
             name="username"
             value={userInfo.username}
             onChange={handleChange}
             placeholder="Enter your Name"
           />
-          {errors.username.length > 0 ? <p className="error">{errors.username}</p> : null}
+          {errors.username.length > 0 ? (
+            <p className="error">{errors.username}</p>
+          ) : null}
         </FormGroup>
 
         <FormGroup className="text-left">
-          <Label htmlFor="password"> Password  </Label>
-          <Input type="password"
+          <Label htmlFor="password"> Password </Label>
+          <Input
+            type="password"
             id="password"
             name="password"
             value={userInfo.password}
             onChange={handleChange}
             placeholder="Password"
           />
-          {errors.password.length > 0 ? <p className="error">{errors.password}</p> : null}
+          {errors.password.length > 0 ? (
+            <p className="error">{errors.password}</p>
+          ) : null}
         </FormGroup>
 
         <FormGroup className="text-left">
-          <Label htmlFor="role" > Role
+          <Label htmlFor="role">
+            {" "}
+            Role
             <select
               id="role"
               name="role"
@@ -157,15 +164,20 @@ function Register({ setLoginInfo }) {
               <option value="client">Client</option>
               <option value="instructor">Instructor</option>
             </select>
-            {errors.role.length > 0 ? <p className="error">{errors.role}</p> : null}
+            {errors.role.length > 0 ? (
+              <p className="error">{errors.role}</p>
+            ) : null}
           </Label>
         </FormGroup>
 
-        <Button className="btn-lg btn-block"
+        <Button
+          className="btn-lg btn-block"
           color="primary"
           type="submit"
           disabled={buttonIsDisabled}
-        >Register</Button>
+        >
+          Register
+        </Button>
       </Form>
     </>
   );

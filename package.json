@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "// eslint-disable-next-line\nreact-scripts build", 
+    "build": "// eslint-disable-next-line\nreact-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -48,6 +48,6 @@
     ]
   },
   "engines": {
-    "node": "16.x"
+    "node": "16.20.2"
   }
 }
